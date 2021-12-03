@@ -52,4 +52,4 @@ jobs:
           app-name: 'NBEE'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11EC3EE6BC92495DB14D56B3FAA9161E }}
-          package: .
+          package: ./dist/FRTProject
