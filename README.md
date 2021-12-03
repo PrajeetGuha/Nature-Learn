@@ -1,2 +1,0 @@
-# FRTProject
-FRT Project
