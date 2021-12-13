@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
     }
     else{
       this.tab = 'prototype'
+      this.sendmessage(3);
     }
   }
 

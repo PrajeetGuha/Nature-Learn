@@ -1,0 +1,28 @@
+<div class="container" [hidden] = "activewindow !== 'profile'">
+    <form>
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="Name" placeholder="Full Name" [disabled] = "!profile_edit">
+        </div>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email ID</label>
+            <input type="text" class="form-control" id="Email" placeholder="Email Address" [disabled] = "!profile_edit">
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="GenderRadio" id="RadioMale" value="Male" [disabled] = "!profile_edit" [checked] = "gender === 0">
+            <label class="form-check-label" for="inlineRadio1">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="GenderRadio" id="RadioFemale" value="Female" [disabled] = "!profile_edit" [checked] = "gender === 1">
+            <label class="form-check-label" for="inlineRadio2">Female</label>
+          </div>
+          <div id = "submission">
+            <ul class="nav-pills nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" (click) = "profile_operate()">{{button_text}}</a>
+                  </li>
+            </ul>
+          </div>
+    </form>
+</div>

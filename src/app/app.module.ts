@@ -4,12 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './CustomComponent/navbar/navbar.component';
 import { MainbodyComponent } from './CustomComponent/mainbody/mainbody.component';
+import { PrototypeComponent } from './CustomComponent/prototype/prototype.component';
+import { FormComponent } from './CustomComponent/form/form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    MainbodyComponent
+    MainbodyComponent,
+    PrototypeComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule

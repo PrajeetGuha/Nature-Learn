@@ -1,0 +1,10 @@
+#upper{
+    background: rgb(230, 186, 105);
+    border-radius: 0;
+}
+.dropdown-item:hover{
+    background: rgb(230, 186, 105);
+}
+.dropdown-item.active{
+    background: rgb(230, 186, 105);
+}
