@@ -78,7 +78,8 @@ export class FormComponent implements OnInit {
       this.email = (<HTMLInputElement>document.getElementById("Email")).value;
       var genderradios = document.getElementsByName('GenderRadio');
       for ( var i = 0; i < 2; i++){
-        if (genderradios[i]){
+        var b = <HTMLInputElement>genderradios.item(i);
+        if (b.checked){
           this.gender = i;
         }
       }
