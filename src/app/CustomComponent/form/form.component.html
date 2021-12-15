@@ -1,28 +1,84 @@
-<div class="container" [hidden] = "activewindow !== 'profile'">
-    <form>
-        <div class="mb-3">
-            <label for="Name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="Name" placeholder="Full Name" [disabled] = "!profile_edit">
-        </div>
-        <div class="mb-3">
-            <label for="Email" class="form-label">Email ID</label>
-            <input type="text" class="form-control" id="Email" placeholder="Email Address" [disabled] = "!profile_edit">
-        </div>
+<div class="container" [hidden]="activewindow !== 'profile'">
+  <form>
+    <div class="mb-3">
+      <label for="Name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="Name" placeholder="Full Name" [disabled]="!profile_edit">
+    </div>
+    <div class="mb-3">
+      <label for="Email" class="form-label">Email ID</label>
+      <input type="text" class="form-control" id="Email" placeholder="Email Address" [disabled]="!profile_edit">
+    </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="GenderRadio" id="RadioMale" value="Male" [disabled] = "!profile_edit" [checked] = "gender === 0">
-            <label class="form-check-label" for="inlineRadio1">Male</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="GenderRadio" id="RadioFemale" value="Female" [disabled] = "!profile_edit" [checked] = "gender === 1">
-            <label class="form-check-label" for="inlineRadio2">Female</label>
-          </div>
-          <div id = "submission">
-            <ul class="nav-pills nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" (click) = "profile_operate()">{{button_text}}</a>
-                  </li>
-            </ul>
-          </div>
-    </form>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="GenderRadio" id="RadioMale" value="Male"
+        [disabled]="!profile_edit" [checked]="gender === 0">
+      <label class="form-check-label" for="inlineRadio1">Male</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="GenderRadio" id="RadioFemale" value="Female"
+        [disabled]="!profile_edit" [checked]="gender === 1">
+      <label class="form-check-label" for="inlineRadio2">Female</label>
+    </div>
+    <div id="submission">
+      <ul class="nav-pills nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" (click)="profile_operate()">{{button_text}}</a>
+        </li>
+      </ul>
+    </div>
+  </form>
 </div>
+
+<div class="container" [hidden]="activewindow !== 'data'">
+  <button type="button" class="btn btn-outline-dark" (click)="openmodal('add-data')">Add</button>
+  <div *ngFor="let item of items;index as i;">
+    <div class="card text-center">
+      <div class="card-header">
+        {{i+1}}. {{item.header}}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{item.title}}</h5>
+        <p class="card-text">{{item.description}}</p>
+        <p class="class-text">{{item.date.slice(3,6)+item.date.slice(0,3)+item.date.slice(6)}}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="card-footer text-muted">
+          {{daysgone(item.date)}} days ago
+        </div>
+      </div>
+    </div>
+    <jw-modal id="add-data">
+      <h1 class="display-5">Data</h1>
+      <div class="mb-3">
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Type of Activity Undertaken</option>
+          <option value="1">Excursion</option>
+          <option value="2">Knowledge Check</option>
+          <option value="3">Extra-Curriculum Activity</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Title</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title Of the Activity">
+      </div>
+      <div class="mb-3">
+        <label for="descriptionbox" class="form-label">Description</label>
+        <textarea class="form-control" id="descriptionbox" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col">
+            <input type="number" class="form-control" placeholder="Score given" aria-label="Score">
+          </div>
+          <div class="col">
+            <input type="number" class="form-control" placeholder="Total score" aria-label="Total">
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateofactivity" class="form-label">Date of Activity</label>
+        <input type="date" class="form-control" aria-label="Date" id="dateofactivity">
+      </div>
+      <button type="button" class="btn btn-lg btn-primary" (click)="closeaftersave('add-data')">Save</button>
+      <button type="button" class="btn btn-secondary btn-lg" (click)="closemodal('add-data')">Close</button>
+    </jw-modal>
+  </div>

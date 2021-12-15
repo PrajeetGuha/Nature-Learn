@@ -6,6 +6,7 @@ import { NavbarComponent } from './CustomComponent/navbar/navbar.component';
 import { MainbodyComponent } from './CustomComponent/mainbody/mainbody.component';
 import { PrototypeComponent } from './CustomComponent/prototype/prototype.component';
 import { FormComponent } from './CustomComponent/form/form.component';
+import { ModalModule } from './CustomComponent/_modal';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FormComponent } from './CustomComponent/form/form.component';
     FormComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

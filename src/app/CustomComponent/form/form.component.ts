@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../prototype/data.service';
+import { ModalService } from '../_modal';
 
 @Component({
   selector: 'app-form',
@@ -11,7 +12,16 @@ export class FormComponent implements OnInit {
   profile_edit: boolean = false;
   button_text : string = 'Edit';
 
-  students = [{ name: "StudentA", email: "student@test.net", gender: 0 },
+  students = [{ name: "StudentA", email: "student@test.net", gender: 0, items : [{
+    header : 'Excursion', 
+    title : 'Visit to Botanical Garden', 
+    description : 'A visit undertaken by school to the Indian Botanical Garden', 
+    date : '12/12/2021'},{
+    header : 'Excursion', 
+    title : 'Visit to Botanical Garden', 
+    description : 'A visit undertaken by school to the Indian Botanical Garden', 
+    date : '12/15/2021'}] },
+
   { name: "StudentB", email: "student@test.net", gender: 1 },
   { name: "StudentC", email: "student@test.net", gender: 0 }]
 
@@ -19,11 +29,23 @@ export class FormComponent implements OnInit {
   activestudentid : number = 0;
   activewindow: any = 0;
 
-  constructor(private ds: DataService) {
+  constructor(private ds: DataService, private ms : ModalService) {
     this.ds.callToggle.subscribe((data) => { this.operatechange(data) });
   }
 
   ngOnInit(): void {
+  }
+
+  closemodal(id : string){
+    this.ms.close(id);
+  }
+
+  openmodal(id : string){
+    this.ms.open(id);
+  }
+
+  closeaftersave(id : string){
+    
   }
 
   operatechange(k: any) {
@@ -47,6 +69,7 @@ export class FormComponent implements OnInit {
     }
     else if (s == 2 && this.activestudent != 0) {
       this.activewindow = 'data';
+      this.setdata();
     }
     else if (s == 3 && this.activestudent != 0) {
       this.activewindow = 'evaluation';
@@ -68,6 +91,16 @@ export class FormComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("Email")).value = this.email;
 
     
+  }
+
+  setdata(){
+    this.items = this.activestudent.items;
+  }
+
+  daysgone(date : string){
+    let startdate = new Date(date);
+    let today = new Date();
+    return Math.ceil((today.getTime() - startdate.getTime()) / (1000 * 60 * 60 * 24)) - 1;
   }
 
   profile_operate() {
