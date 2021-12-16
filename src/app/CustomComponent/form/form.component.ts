@@ -15,15 +15,17 @@ export class FormComponent implements OnInit {
   students = [{ name: "StudentA", email: "student@test.net", gender: 0, items : [{
     header : 'Excursion', 
     title : 'Visit to Botanical Garden', 
-    description : 'A visit undertaken by school to the Indian Botanical Garden', 
+    description : 'A visit undertaken by school to the Indian Botanical Garden',
+    score : ['89','100'], 
     date : '12/12/2021'},{
     header : 'Excursion', 
     title : 'Visit to Botanical Garden', 
     description : 'A visit undertaken by school to the Indian Botanical Garden', 
+    score : ['32','50'],
     date : '12/15/2021'}] },
 
-  { name: "StudentB", email: "student@test.net", gender: 1 },
-  { name: "StudentC", email: "student@test.net", gender: 0 }]
+  { name: "StudentB", email: "student@test.net", gender: 1, items : []},
+  { name: "StudentC", email: "student@test.net", gender: 0, items : [] }]
 
   activestudent: any = 0;
   activestudentid : number = 0;
@@ -41,11 +43,44 @@ export class FormComponent implements OnInit {
   }
 
   openmodal(id : string){
+    (<HTMLInputElement>document.getElementById("title")).value = '';
+    (<HTMLInputElement>document.getElementById("descriptionbox")).value = '';
+    (<HTMLInputElement>document.getElementById("date")).value = '';
+    (<HTMLInputElement>document.getElementById("scored")).value = '';
+    (<HTMLInputElement>document.getElementById("total")).value = '';
+    (<HTMLInputElement>document.getElementById("activity")).value = '0';
     this.ms.open(id);
   }
 
   closeaftersave(id : string){
-    
+
+    var dict = {header : '', title : '', description : '', score : ['',''], date : ''};
+    var temp = (<HTMLInputElement>document.getElementById("activity")).value;
+    if ( temp == '1' ){
+      dict.header = "Excursion";
+    }
+    else if ( temp == '2' ){
+      dict.header = "Knowledge Check";
+    }
+    else if ( temp == '3' ){
+      dict.header = "ExtraCurriculum";
+    }
+    dict.title = (<HTMLInputElement>document.getElementById("title")).value;
+    dict.description = (<HTMLInputElement>document.getElementById("descriptionbox")).value;
+    var date = (<HTMLInputElement>document.getElementById("date")).value;
+    dict.score[0] = (<HTMLInputElement>document.getElementById("scored")).value;
+    dict.score[1] = (<HTMLInputElement>document.getElementById("total")).value;
+    dict.date = date.slice(5,7) + '/' + date.slice(8) + '/' + date.slice(0,4);
+    this.activestudent.items.push(dict);
+    (<HTMLInputElement>document.getElementById("title")).value = '';
+    (<HTMLInputElement>document.getElementById("descriptionbox")).value = '';
+    (<HTMLInputElement>document.getElementById("date")).value = '';
+    (<HTMLInputElement>document.getElementById("scored")).value = '';
+    (<HTMLInputElement>document.getElementById("total")).value = '';
+    (<HTMLInputElement>document.getElementById("activity")).value = '0';
+    console.log(dict);
+
+    this.ms.close(id);
   }
 
   operatechange(k: any) {
@@ -123,5 +158,11 @@ export class FormComponent implements OnInit {
     else{
       this.button_text = 'Save Changes';
     }
+  }
+
+  deleteitem(i : number){
+    this.activestudent.items.splice(i,1);
+    for ( var i = 0; i < this.items.length; i++ )
+    console.log('Array after deletion:' + this.activestudent.items);
   }
 }
