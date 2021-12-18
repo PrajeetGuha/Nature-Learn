@@ -1,3 +1,9 @@
 .container{
     margin-top: 15px;
 }
+.text-sucess{
+    color: green;
+}
+.text-danger{
+    color: rgb(143, 16, 16);
+}

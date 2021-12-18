@@ -37,51 +37,246 @@
         {{i+1}}. {{item.header}}
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{item.title}}</h5>
+        <h5 class="card-title">{{item.titlename}}</h5>
         <p class="card-text">{{item.description}}</p>
         <p class="class-text">{{item.date.slice(3,6)+item.date.slice(0,3)+item.date.slice(6)}}</p>
         <p class="class-text">{{'Score :' + item.score[0] + '/' + item.score[1]}}</p>
-        <button href="#" class="btn btn-primary" (click) = 'deleteitem(i)'disabled >Delete</button>
+        <button href="#" class="btn btn-primary" (click)='deleteitem(i)'>Delete</button>
         <div class="card-footer text-muted">
           {{daysgone(item.date)}} days ago
         </div>
       </div>
     </div>
-    <jw-modal id="add-data">
-      <form class="row g-3">
-        <h1 class="display-5">Data</h1>
-        <div class="mb-3">
-          <select class="form-select" aria-label="Default select example" id="activity">
-            <option selected disabled value="0">Type of Activity Undertaken</option>
-            <option value="1">Excursion</option>
-            <option value="2">Knowledge Check</option>
-            <option value="3">Extra-Curriculum Activity</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
-          <input type="text" class="form-control" id="title" placeholder="Title Of the Activity" required minlength="4">
-        </div>
-        <div class="mb-3">
-          <label for="descriptionbox" class="form-label">Description</label>
-          <textarea class="form-control" id="descriptionbox" rows="3" required minlength="10"></textarea>
-        </div>
-        <div class="mb-3">
-          <div class="row">
-            <div class="col">
-              <input type="number" class="form-control" placeholder="Score given" aria-label="Score" id="scored" required>
-            </div>
-            <div class="col">
-              <input type="number" class="form-control" placeholder="Total score" aria-label="Total" id="total" required>
-            </div>
+  </div>
+  <jw-modal id="add-data">
+    <form class="row g-3">
+      <h1 class="display-5">Data</h1>
+      <div class="mb-3">
+        <select class="form-select" aria-label="Default select example" id="activity">
+          <option selected disabled value="0">Type of Activity Undertaken</option>
+          <option value="1">Excursion</option>
+          <option value="2">Knowledge Check</option>
+          <option value="3">Extra-Curriculum Activity</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Title Of the Activity">
+      </div>
+      <div class="mb-3">
+        <label for="descriptionbox" class="form-label">Description</label>
+        <textarea class="form-control" id="descriptionbox" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col">
+            <input type="number" class="form-control" placeholder="Score given" aria-label="Score" id="scored">
+          </div>
+          <div class="col">
+            <input type="number" class="form-control" placeholder="Total score" aria-label="Total" id="total">
           </div>
         </div>
-        <div class="mb-3">
-          <label for="dateofactivity" class="form-label">Date of Activity</label>
-          <input type="date" class="form-control" aria-label="Date" id="dateofactivity" id="date" required>
+      </div>
+      <div class="mb-3">
+        <label for="dateofactivity" class="form-label">Date of Activity</label>
+        <input type="date" class="form-control" aria-label="Date" id="dateofactivity" max=''>
+      </div>
+      <button type="button" class="btn btn-lg btn-primary" (click)="closeaftersave('add-data')">Save</button>
+      <button type="button" class="btn btn-secondary btn-lg" (click)="closemodal('add-data')">Close</button>
+    </form>
+    <!-- <button type="button" class="btn btn-lg btn-primary" (click)="closeaftersave('add-data')">Save</button> -->
+  </jw-modal>
+</div>
+
+<div class="container" [hidden]="activewindow != 'evaluation'">
+  <p class="display-6">For {{month}} {{year}} - Total Activities : {{activities}}</p>
+  <section>
+    <div class="row">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>GEB</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{present_geb.toFixed(3)}}</strong>
+              <small class="ms-2" [ngClass]=" increase > 0 ? 'text-sucess' : 'text-danger'">
+                <i class="fas fa-arrow-up fa-sm pe-1"></i>{{increase.toFixed(3)}}%</small>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Previous Month
+            </p>
+            <h5 class="text-muted mb-0">{{previous_geb.toFixed(3)}}</h5>
+          </div>
         </div>
-        <button type="button" class="btn btn-lg btn-primary" (click)="closeaftersave('add-data')">Save</button>
-        <button type="button" class="btn btn-secondary btn-lg" (click)="closemodal('add-data')">Close</button>
-      </form>
-    </jw-modal>
-  </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>Connectness</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{connectness.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of visits
+            </p>
+            <h5 class="text-muted mb-0">{{visits}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>ECA Scores</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{eca_score.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of ECA Undertaken
+            </p>
+            <h5 class="text-muted mb-0">{{ecas}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>Knowledge</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{environment_knowledge.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Test Scores
+            </p>
+            <h5 class="text-muted mb-0">{{test_score.toFixed(3)}}</h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of tests
+            </p>
+            <h5 class="text-muted mb-0">{{test_undertaken}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <p class="display-6"> For {{year}} - Total Activities : {{annual_activities}}</p>
+  <section>
+    <div class="row">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>GEB</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{annual_present_geb.toFixed(3)}}</strong>
+              <small class="ms-2" [ngClass]=" annual_increase > 0 ? 'text-sucess' : 'text-danger'">
+                <i class="fas fa-arrow-up fa-sm pe-1"></i>{{annual_increase.toFixed(3)}}%</small>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Previous Year
+            </p>
+            <h5 class="text-muted mb-0">{{annual_previous_geb.toFixed(3)}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>Connectness</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{annual_connectness.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of visits
+            </p>
+            <h5 class="text-muted mb-0">{{annual_visits}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>ECA Scores</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{annual_eca_score.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of ECA Undertaken
+            </p>
+            <h5 class="text-muted mb-0">{{annual_ecas}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-uppercase small mb-2">
+              <strong>Knowledge</strong>
+            </p>
+            <h5 class="mb-0">
+              <strong>{{annual_environment_knowledge.toFixed(3)}}</strong>
+            </h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Test Scores
+            </p>
+            <h5 class="text-muted mb-0">{{annual_test_score.toFixed(3)}}</h5>
+
+            <hr />
+
+            <p class="text-uppercase text-muted small mb-2">
+              Number of tests
+            </p>
+            <h5 class="text-muted mb-0">{{annual_test_undertaken}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
