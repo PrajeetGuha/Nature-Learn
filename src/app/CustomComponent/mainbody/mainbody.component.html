@@ -1,3 +1,4 @@
 <h1 class = 'display-5' [innerHtml] = "title" *ngIf="test === 0"></h1>
 <p class="lead" [innerHtml] = "description" *ngIf="test === 0"></p>
+<p id='note' *ngIf="test === 1">[NOTE] If you move out of the prototype tab to another tab, the data of the prototype will refresh to the default data that was present at the start. All changes will be reverted back to the original.</p>
 <app-prototype *ngIf="test === 1"></app-prototype>

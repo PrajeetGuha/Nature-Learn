@@ -13,31 +13,46 @@ export class FormComponent implements OnInit {
   button_text: string = 'Edit';
 
   students = [{
-    name: "StudentA", email: "student@test.net", gender: 0, items: [{
+    name: "StudentA", email: "student@test.net", gender: 0, items: [
+      {
       header: 'Excursion',
       titlename: 'Visit to Botanical Garden',
       description: 'A visit undertaken by school to the Indian Botanical Garden',
       score: ['89', '100'],
       date: '12/12/2021'
-    }, {
-      header: 'Excursion',
-      titlename: 'Visit to Botanical Garden',
-      description: 'A visit undertaken by school to the Indian Botanical Garden',
-      score: ['32', '50'],
+    },
+    {
+      header: 'Knowledge Check',
+      titlename: 'Quiz',
+      description: 'Animals and Plants',
+      score: ['7', '10'],
       date: '12/15/2021'
     }, {
-      header: 'Excursion',
-      titlename: 'Visit to Botanical Garden',
-      description: 'A visit undertaken by school to the Indian Botanical Garden',
-      score: ['32', '50'],
-      date: '11/20/2021'
+      header: 'Extra-Curriculum Activity',
+      titlename: 'Plant Trees',
+      description: 'Planting trees in school garden',
+      score: ['10', '10'],
+      date: '09/23/2021'
     }, {
       header: 'Excursion',
-      titlename: 'Visit to Botanical Garden',
-      description: 'A visit undertaken by school to the Indian Botanical Garden',
-      score: ['70', '70'],
-      date: '11/10/2021'
-    }]
+      titlename: 'Visit to the Museum',
+      description: 'A visit to Indian Museum',
+      score: ['48', '50'],
+      date: '11/03/2021'
+    }, {
+      header: 'Extra-Curriculum Activity',
+      titlename: 'Earth Day',
+      description: 'Poster Making Competition',
+      score: ['32', '35'],
+      date: '04/22/2021'
+    }, {
+      header: 'Excursion',
+      titlename: 'Nature Park',
+      description: 'Visit to local Nature Park and also plant trees',
+      score: ['30', '40'],
+      date: '10/22/2020'
+    }
+  ]
   },
 
   { name: "StudentB", email: "student@test.net", gender: 1, items: [] },
@@ -68,7 +83,7 @@ export class FormComponent implements OnInit {
     this.ms.open(id);
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
+    var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
     var ddt, mmt;
 
@@ -100,7 +115,7 @@ export class FormComponent implements OnInit {
       dict.header = "Knowledge Check";
     }
     else if (temp == '3') {
-      dict.header = "ExtraCurriculum";
+      dict.header = "Extra-Curriculum Activity";
     }
     else {
       alert('Incorrect choice of activity');
@@ -118,9 +133,7 @@ export class FormComponent implements OnInit {
       return;
     }
     dict.description = description;
-    // console.log('Check1');
     var date = (<HTMLInputElement>document.getElementById("dateofactivity")).value;
-    // console.log('Check2');
     date = date.slice(5, 7) + '/' + date.slice(8) + '/' + date.slice(0, 4);
     if ( date == '//' ){
       alert('Give a valid date');
@@ -156,13 +169,11 @@ export class FormComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("scored")).value = '';
     (<HTMLInputElement>document.getElementById("total")).value = '';
     (<HTMLInputElement>document.getElementById("activity")).value = '0';
-    // console.log(dict);
 
     this.ms.close(id);
   }
 
   operatechange(k: any) {
-    // console.log(k);
     if (k[0] != 0) {
       this.changestudent(k[0] - 1);
       this.changewindow(k[1]);
@@ -172,7 +183,6 @@ export class FormComponent implements OnInit {
   changestudent(s: number) {
     this.activestudent = this.students[s];
     this.activestudentid = s;
-    // console.log(this.activestudent.name);
   }
 
   changewindow(s: number) {
@@ -186,7 +196,7 @@ export class FormComponent implements OnInit {
       this.activewindow = 'data';
       this.setprofile();
       this.setdata();
-      this.setdata();
+      this.gebcalculate();
     }
     else if (s == 3 && this.activestudent != 0) {
       this.activewindow = 'evaluation';
@@ -206,7 +216,6 @@ export class FormComponent implements OnInit {
     this.email = this.activestudent.email;
     this.gender = this.activestudent.gender;
 
-    // console.log(this.name);
     (<HTMLInputElement>document.getElementById("Name")).value = this.name;
     (<HTMLInputElement>document.getElementById("Email")).value = this.email;
 
@@ -247,8 +256,6 @@ export class FormComponent implements OnInit {
 
   deleteitem(i: number) {
     this.activestudent.items.splice(i, 1);
-    // for (var i = 0; i < this.items.length; i++)
-      // console.log('Array after deletion:' + this.activestudent.items);
   }
 
   environment_knowledge: number = 0;
@@ -279,8 +286,7 @@ export class FormComponent implements OnInit {
 
   annualgebcalculate() {
     var visit = 0;
-    var prev_score = 0;
-    var prev_total = 0;
+    var prev_visit = 0;
     var date = new Date();
     this.year = date.getFullYear();
     this.annual_visits = 0;
@@ -296,40 +302,38 @@ export class FormComponent implements OnInit {
     this.annual_increase = 0;
 
     for (var i = 0; i < this.items.length; i++) {
-      // console.log(this.year);
-      if (this.items[i].title = 'Excursion' && this.year == parseInt(this.items[i].date.slice(6), 10)) {
+      if (this.items[i].header == 'Excursion' && this.year == parseInt(this.items[i].date.slice(6), 10)) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         visit += score / total;
         this.annual_visits += 1;
         this.annual_activities += 1;
       }
-      else if (this.items[i].title = 'Excursion' && (this.year - 1) == parseInt(this.items[i].date.slice(6), 10)) {
-        prev_score += parseFloat(this.items[i].score[0]);
-        prev_total += parseFloat(this.items[i].score[1]);
-        this.annual_activities += 1;
+      else if (this.items[i].header == 'Excursion' && (this.year - 1) == parseInt(this.items[i].date.slice(6), 10)) {
+        let prev_score = parseFloat(this.items[i].score[0]);
+        let prev_total = parseFloat(this.items[i].score[1]);
+        prev_visit = prev_score / prev_total;
       }
-      else if (this.items[i].title = 'Knowledge Check' && (this.year - 1) == parseInt(this.items[i].date.slice(6), 10)) {
+      else if (this.items[i].header == 'Knowledge Check' && this.year == parseInt(this.items[i].date.slice(6), 10)) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         this.annual_test_score += score / total;
         this.annual_test_undertaken += 1;
         this.annual_activities += 1;
       }
-      else if (this.items[i].title = 'Extra-Curriculum Activity' && (this.year - 1) == parseInt(this.items[i].date.slice(6), 10)) {
+      else if (this.items[i].header == 'Extra-Curriculum Activity' && this.year == parseInt(this.items[i].date.slice(6), 10)) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         this.annual_eca_score += score / total;
         this.annual_ecas += 1;
         this.annual_activities += 1;
       }
-      this.annual_environment_knowledge = (visit + this.annual_test_score) * 0.26 + 0.93;
-      this.annual_connectness = (visit) * 0.29 + 0.92;
-      this.annual_present_geb = (this.annual_environment_knowledge * 0.13 + this.annual_connectness * 0.83 + 0.28) * 0.87 + 0.24;
-      this.annual_previous_geb = (((prev_score / prev_total) * 0.26 + 0.93) * 0.13 + ((prev_score / prev_total) * 0.29 + 0.92) * 0.83 + 0.28) * 0.87 + 0.24;
-      this.annual_increase = (this.annual_present_geb - this.annual_previous_geb) * 100 / this.annual_previous_geb;
-
     }
+    this.annual_environment_knowledge = (visit + this.annual_test_score) * 0.26 + 0.93;
+    this.annual_connectness = (visit) * 0.29 + 0.92;
+    this.annual_present_geb = (this.annual_environment_knowledge * 0.13 + this.annual_connectness * 0.83 + 0.28) * 0.87 + 0.24;
+    this.annual_previous_geb = ((prev_visit * 0.26 + 0.93) * 0.13 + (prev_visit * 0.29 + 0.92) * 0.83 + 0.28) * 0.87 + 0.24;
+    this.annual_increase = (this.annual_present_geb - this.annual_previous_geb) * 100 / this.annual_previous_geb;
   }
 
   gebcalculate() {
@@ -337,8 +341,7 @@ export class FormComponent implements OnInit {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     var visit = 0;
-    var prev_score = 0;
-    var prev_total = 0;
+    var prev_visit = 0;
     var date = new Date();
     var month = date.getMonth() + 1;
     this.month = monthNames[month - 1];
@@ -354,41 +357,50 @@ export class FormComponent implements OnInit {
     this.present_geb = 0;
     this.previous_geb = 0;
     this.increase = 0;
+    var prev_month = month;
+    var prev_month_year = this.year;
+    if ( month == 1 ){
+      prev_month = 12;
+      prev_month_year = this.year - 1;
+    }
+    else{
+      prev_month -= 1;
+    }
 
     for (var i = 0; i < this.items.length; i++) {
-      // console.log(month);
-      if (this.items[i].title = 'Excursion' && month == parseInt(this.items[i].date.slice(0, 2), 10)) {
+      if (this.items[i].header == 'Excursion' && ( month == parseInt(this.items[i].date.slice(0, 2), 10) ) && ( this.year == parseInt(this.items[i].date.slice(6), 10) ) ) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         visit += score / total;
         this.visits += 1;
         this.activities += 1;
       }
-      else if (this.items[i].title = 'Excursion' && (month - 1) == parseInt(this.items[i].date.slice(0, 2), 10)) {
-        prev_score += parseFloat(this.items[i].score[0]);
-        prev_total += parseFloat(this.items[i].score[1]);
-        this.activities += 1;
+      else if (this.items[i].header == 'Excursion' && prev_month == parseInt(this.items[i].date.slice(0, 2), 10) && prev_month_year == parseInt(this.items[i].date.slice(6), 10) ) {
+        let prev_score = parseFloat(this.items[i].score[0]);
+        let prev_total = parseFloat(this.items[i].score[1]);
+        prev_visit += prev_score / prev_total;
+        console.log('Previous month excursion found.');
       }
-      else if (this.items[i].title = 'Knowledge Check' && (month - 1) == parseInt(this.items[i].date.slice(0, 2), 10)) {
+      else if (this.items[i].header == 'Knowledge Check' && ( month == parseInt(this.items[i].date.slice(0, 2), 10) ) && ( this.year == parseInt(this.items[i].date.slice(6), 10) )) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         this.test_score += score / total;
         this.test_undertaken += 1;
         this.activities += 1;
       }
-      else if (this.items[i].title = 'Extra-Curriculum Activity' && (month - 1) == parseInt(this.items[i].date.slice(0, 2), 10)) {
+      else if (this.items[i].header == 'Extra-Curriculum Activity' && ( month == parseInt(this.items[i].date.slice(0, 2), 10) ) && ( this.year == parseInt(this.items[i].date.slice(6), 10) )) {
         let score = parseFloat(this.items[i].score[0]);
         let total = parseFloat(this.items[i].score[1]);
         this.eca_score += score / total;
         this.ecas += 1;
         this.activities += 1;
       }
-      this.environment_knowledge = (visit + this.test_score) * 0.26 + 0.93;
-      this.connectness = (visit) * 0.29 + 0.92;
-      this.present_geb = (this.environment_knowledge * 0.13 + this.connectness * 0.83 + 0.28) * 0.87 + 0.24;
-      this.previous_geb = (((prev_score / prev_total) * 0.26 + 0.93) * 0.13 + ((prev_score / prev_total) * 0.29 + 0.92) * 0.83 + 0.28) * 0.87 + 0.24;
-      this.increase = (this.present_geb - this.previous_geb) * 100 / this.previous_geb;
     }
+    this.environment_knowledge = (visit + this.test_score) * 0.26 + 0.93;
+    this.connectness = (visit) * 0.29 + 0.92;
+    this.present_geb = (this.environment_knowledge * 0.13 + this.connectness * 0.83 + 0.28) * 0.87 + 0.24;
+    this.previous_geb = ((prev_visit * 0.26 + 0.93) * 0.13 + (prev_visit * 0.29 + 0.92) * 0.83 + 0.28) * 0.87 + 0.24;
+    this.increase = (this.present_geb - this.previous_geb) * 100 / this.previous_geb;
     this.annualgebcalculate();
   }
 }
