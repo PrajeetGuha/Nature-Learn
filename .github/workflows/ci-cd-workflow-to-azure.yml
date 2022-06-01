@@ -4,9 +4,9 @@
 name: Build and deploy Node.js app to Azure Web App - NBEE
 
 on:
-#   push:
-#     branches:
-#       - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -52,4 +52,4 @@ jobs:
           app-name: 'Nature-Learn'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4411DB92448F45ED8915F306CF542588 }}
-          package: ./dist/Nature-Learn
+          package: ./dist/
