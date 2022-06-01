@@ -52,4 +52,4 @@ jobs:
           app-name: 'Nature-Learn'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4411DB92448F45ED8915F306CF542588 }}
-          package: ./dist/FRTProject
+          package: ./dist/Nature-Learn
