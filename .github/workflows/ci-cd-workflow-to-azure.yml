@@ -19,21 +19,18 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: npm install and build
         run: |
           npm install
           npm run build --prod
-          
-      - name: Zip artifact for deployment
-        run: zip -r release.zip dist/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: release.zip
+          path: dist/
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,9 +44,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-          
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -57,5 +51,5 @@ jobs:
         with:
           app-name: 'NBEE'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11EC3EE6BC92495DB14D56B3FAA9161E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4411DB92448F45ED8915F306CF542588 }}
           package: ./dist/FRTProject
